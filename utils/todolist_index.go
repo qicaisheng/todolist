@@ -2,8 +2,15 @@ package utils
 
 import (
 	"log"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
+)
+
+const (
+	todolistIndexesFileName     = ".todolist_indexes"
+	todolistIndexesFileTemplate = "todoId,title,status\n-------------------\n"
 )
 
 type TodolistIndex struct {
@@ -44,4 +51,13 @@ func todolistIndexesParser(bytes []byte) (TodolistIndexes, error) {
 		log.Printf("%v", *todolistIndexes[i])
 	}
 	return TodolistIndexes{todolistIndexes}, nil
+}
+
+func InitTodolistIndexesFile(workdir string) error {
+	indexesFile := filepath.Join(workdir, todolistIndexesFileName)
+	if _, err := os.Stat(indexesFile); os.IsNotExist(err) {
+		err := os.WriteFile(indexesFile, []byte(todolistIndexesFileTemplate), 0644)
+		return err
+	}
+	return nil
 }
