@@ -62,7 +62,7 @@ func todolistIndexesParser(bytes []byte) (TodolistIndexes, error) {
 }
 
 func (util TodoListIndexesUtil) NewTodoId() int64 {
-	indexesFile := filepath.Join(util.Workdir, todolistIndexesFileName)
+	indexesFile := util.indexesFile()
 	file, err := os.ReadFile(indexesFile)
 	if err != nil {
 		fmt.Println("read indexes file error: ", err)
@@ -80,10 +80,14 @@ func newTodoId(indexesFile []byte) int64 {
 }
 
 func (util TodoListIndexesUtil) InitTodolistIndexesFile() error {
-	indexesFile := filepath.Join(util.Workdir, todolistIndexesFileName)
+	indexesFile := util.indexesFile()
 	if _, err := os.Stat(indexesFile); os.IsNotExist(err) {
 		err := os.WriteFile(indexesFile, []byte(todolistIndexesFileTemplate), 0644)
 		return err
 	}
 	return nil
+}
+
+func (util TodoListIndexesUtil) indexesFile() string {
+	return filepath.Join(util.Workdir, todolistIndexesFileName)
 }
