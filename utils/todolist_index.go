@@ -105,6 +105,21 @@ func (indexes TodoListIndexes) AppendCreatedTodo(index TodolistIndex) {
 	}
 }
 
+func (indexes TodoListIndexes) List() []*TodolistIndex {
+	indexesFile := indexes.indexesFile()
+	file, err := os.ReadFile(indexesFile)
+	if err != nil {
+		fmt.Println("read indexes file error: ", err)
+		os.Exit(1)
+	}
+	todolistIndexes, err := todolistIndexesParser(file)
+	if err != nil {
+		os.Exit(1)
+	}
+
+	return todolistIndexes
+}
+
 func (indexes TodoListIndexes) indexesFile() string {
 	return filepath.Join(indexes.Workdir, todolistIndexesFileName)
 }

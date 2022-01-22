@@ -33,10 +33,8 @@ func initConfig() {
 
 	viper.AutomaticEnv()
 
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-		fmt.Printf("viper config is %+v\n", viper.AllSettings())
-		fmt.Printf("wordir is %s\n", viper.GetString("workdir"))
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Printf(".todolist is broken, read error: %v", err)
 	}
 }
 

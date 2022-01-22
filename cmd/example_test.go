@@ -12,14 +12,24 @@ const (
 	testWorkdir = "../test_workdir"
 )
 
-func TestAddTodo(t *testing.T) {
+func TestAll(t *testing.T) {
 	setUpTestWorkdir(t)
+
+	err := initTodolist()
+	assert.Nil(t, err)
+
+	todolistIndexes := listTodolist()
+	assert.Empty(t, todolistIndexes)
 
 	addTodo("addTodo 1")
 	addTodo("addTodo 2")
 
 	assertTodoCreated(t, "1-addTodo 1.md")
 	assertTodoCreated(t, "2-addTodo 2.md")
+
+	todolistIndexes = listTodolist()
+	assert.NotEmpty(t, todolistIndexes)
+	assert.Equal(t, 2, len(todolistIndexes))
 
 	teardownTestWorkdir(t)
 }
