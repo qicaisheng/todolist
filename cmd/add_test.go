@@ -20,6 +20,13 @@ func TestAddTodo(t *testing.T) {
 
 	assertTodoCreated(t, "1-addTodo 1.md")
 	assertTodoCreated(t, "2-addTodo 2.md")
+
+	teardownTestWorkdir(t)
+}
+
+func teardownTestWorkdir(t *testing.T) {
+	err := os.RemoveAll(testWorkdir)
+	assert.Nil(t, err)
 }
 
 func assertTodoCreated(t *testing.T, name string) {
