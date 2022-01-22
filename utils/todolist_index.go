@@ -20,7 +20,7 @@ type TodolistIndex struct {
 	status string
 }
 
-type TodoListIndexesUtil struct {
+type TodoListIndexes struct {
 	Workdir string
 }
 
@@ -56,7 +56,7 @@ func todolistIndexesParser(bytes []byte) ([]*TodolistIndex, error) {
 	return todolistIndexes, nil
 }
 
-func (util TodoListIndexesUtil) NewTodoId() int64 {
+func (util TodoListIndexes) NewTodoId() int64 {
 	indexesFile := util.indexesFile()
 	file, err := os.ReadFile(indexesFile)
 	if err != nil {
@@ -74,7 +74,7 @@ func newTodoId(indexesFile []byte) int64 {
 	return latestTodoId(indexes) + 1
 }
 
-func (util TodoListIndexesUtil) InitTodolistIndexesFile() error {
+func (util TodoListIndexes) InitTodolistIndexesFile() error {
 	indexesFile := util.indexesFile()
 	if _, err := os.Stat(indexesFile); os.IsNotExist(err) {
 		err := os.WriteFile(indexesFile, []byte(todolistIndexesFileTemplate), 0644)
@@ -83,6 +83,6 @@ func (util TodoListIndexesUtil) InitTodolistIndexesFile() error {
 	return nil
 }
 
-func (util TodoListIndexesUtil) indexesFile() string {
+func (util TodoListIndexes) indexesFile() string {
 	return filepath.Join(util.Workdir, todolistIndexesFileName)
 }
