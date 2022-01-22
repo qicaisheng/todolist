@@ -6,6 +6,8 @@ import (
 	"github.com/spf13/viper"
 	"os"
 	"path/filepath"
+	"strconv"
+	"todolist/utils"
 )
 
 var addCmd = &cobra.Command{
@@ -22,12 +24,15 @@ var addCmd = &cobra.Command{
 }
 
 func addTodo(title string) {
-	fileName := title + ".md"
+	util := utils.TodoListIndexes{Workdir: Workdir()}
+	todoId := util.NewTodoId()
+	fileName := strconv.FormatInt(todoId, 10) + "-" + title + ".md"
 	filePath := filepath.Join(viper.GetString("workdir"), fileName)
 	err := os.WriteFile(filePath, nil, 0644)
 	if err != nil {
 		_ = fmt.Errorf("write file error: %v", err)
 	}
+	util.AppendCreatedTodo(utils.TodolistIndex{TodoId: todoId, Title: title, Status: "OPEN"})
 }
 
 func init() {

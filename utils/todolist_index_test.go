@@ -15,8 +15,8 @@ func TestParseTodolistIndexes(t *testing.T) {
 	assert.Equal(t, 1, len(todolistIndexes))
 	assert.Equal(t, TodolistIndex{
 		TodoId: 1,
-		title:  "todo 1",
-		status: "OPEN",
+		Title:  "todo 1",
+		Status: "OPEN",
 	}, *todolistIndexes[0])
 }
 
@@ -24,12 +24,12 @@ func TestTodoListIndexes(t *testing.T) {
 	todolistIndexes := []*TodolistIndex{
 		{
 			TodoId: 1,
-			title:  "todo 1",
-			status: "OPEN",
+			Title:  "todo 1",
+			Status: "OPEN",
 		}, {
 			TodoId: 2,
-			title:  "todo 2",
-			status: "OPEN",
+			Title:  "todo 2",
+			Status: "OPEN",
 		},
 	}
 

@@ -16,8 +16,12 @@ const (
 
 type TodolistIndex struct {
 	TodoId int64
-	title  string
-	status string
+	Title  string
+	Status string
+}
+
+func (i TodolistIndex) String() string {
+	return strconv.FormatInt(i.TodoId, 10) + "," + i.Title + "," + i.Status + "\n"
 }
 
 type TodoListIndexes struct {
@@ -48,16 +52,16 @@ func todolistIndexesParser(bytes []byte) ([]*TodolistIndex, error) {
 		}
 		todolistIndexes = append(todolistIndexes, &TodolistIndex{
 			TodoId: parseInt,
-			title:  split[1],
-			status: split[2],
+			Title:  split[1],
+			Status: split[2],
 		})
 		log.Printf("%v", *todolistIndexes[i])
 	}
 	return todolistIndexes, nil
 }
 
-func (util TodoListIndexes) NewTodoId() int64 {
-	indexesFile := util.indexesFile()
+func (indexes TodoListIndexes) NewTodoId() int64 {
+	indexesFile := indexes.indexesFile()
 	file, err := os.ReadFile(indexesFile)
 	if err != nil {
 		fmt.Println("read indexes file error: ", err)
@@ -74,8 +78,8 @@ func newTodoId(indexesFile []byte) int64 {
 	return latestTodoId(indexes) + 1
 }
 
-func (util TodoListIndexes) InitTodolistIndexesFile() error {
-	indexesFile := util.indexesFile()
+func (indexes TodoListIndexes) InitTodolistIndexesFile() error {
+	indexesFile := indexes.indexesFile()
 	if _, err := os.Stat(indexesFile); os.IsNotExist(err) {
 		err := os.WriteFile(indexesFile, []byte(todolistIndexesFileTemplate), 0644)
 		return err
@@ -83,6 +87,24 @@ func (util TodoListIndexes) InitTodolistIndexesFile() error {
 	return nil
 }
 
-func (util TodoListIndexes) indexesFile() string {
-	return filepath.Join(util.Workdir, todolistIndexesFileName)
+func (indexes TodoListIndexes) AppendCreatedTodo(index TodolistIndex) {
+	indexesFile := indexes.indexesFile()
+	f, err := os.OpenFile(indexesFile,
+		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			log.Println(err)
+		}
+	}(f)
+	if _, err := f.WriteString(index.String()); err != nil {
+		log.Println(err)
+	}
+}
+
+func (indexes TodoListIndexes) indexesFile() string {
+	return filepath.Join(indexes.Workdir, todolistIndexesFileName)
 }
