@@ -19,7 +19,8 @@ var initCmd = &cobra.Command{
 }
 
 func initTodolist() error {
-	err := utils.InitTodolistIndexesFile(Workdir())
+	util := utils.TodoListIndexesUtil{Workdir: Workdir()}
+	err := util.InitTodolistIndexesFile()
 	if err != nil {
 		return fmt.Errorf("init toolist error: %v", err)
 	}

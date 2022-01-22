@@ -79,8 +79,8 @@ func newTodoId(indexesFile []byte) int64 {
 	return indexes.LatestTodoId() + 1
 }
 
-func InitTodolistIndexesFile(workdir string) error {
-	indexesFile := filepath.Join(workdir, todolistIndexesFileName)
+func (util TodoListIndexesUtil) InitTodolistIndexesFile() error {
+	indexesFile := filepath.Join(util.Workdir, todolistIndexesFileName)
 	if _, err := os.Stat(indexesFile); os.IsNotExist(err) {
 		err := os.WriteFile(indexesFile, []byte(todolistIndexesFileTemplate), 0644)
 		return err
