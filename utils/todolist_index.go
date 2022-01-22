@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -25,6 +26,9 @@ type TodolistIndexes struct {
 
 func (i TodolistIndexes) LatestTodoId() int64 {
 	indexes := i.Indexes
+	if len(indexes) == 0 {
+		return 0
+	}
 	return indexes[len(indexes)-1].TodoId
 }
 
@@ -51,6 +55,24 @@ func todolistIndexesParser(bytes []byte) (TodolistIndexes, error) {
 		log.Printf("%v", *todolistIndexes[i])
 	}
 	return TodolistIndexes{todolistIndexes}, nil
+}
+
+func NewTodoId(workdir string) int64 {
+	indexesFile := filepath.Join(workdir, todolistIndexesFileName)
+	file, err := os.ReadFile(indexesFile)
+	if err != nil {
+		fmt.Println("read indexes file error: ", err)
+		os.Exit(1)
+	}
+	return newTodoId(file)
+}
+
+func newTodoId(indexesFile []byte) int64 {
+	indexes, err := todolistIndexesParser(indexesFile)
+	if err != nil {
+		os.Exit(1)
+	}
+	return indexes.LatestTodoId() + 1
 }
 
 func InitTodolistIndexesFile(workdir string) error {

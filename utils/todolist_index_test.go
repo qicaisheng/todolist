@@ -36,12 +36,32 @@ func TestTodoListIndexes(t *testing.T) {
 
 	latestTodoId := todolistIndexes.LatestTodoId()
 
-	assert.Equal(t, 2, latestTodoId)
+	assert.Equal(t, int64(2), latestTodoId)
 
 	todolistIndexes = TodolistIndexes{Indexes: []*TodolistIndex{}}
 
 	latestTodoId = todolistIndexes.LatestTodoId()
 
-	assert.Equal(t, 0, latestTodoId)
+	assert.Equal(t, int64(0), latestTodoId)
+}
+
+func TestNewTodoId(t *testing.T) {
+	testCases := []struct {
+		indexesFile string
+		newTodoId   int64
+	}{
+		{
+			indexesFile: "todoId,title,status\n-------------------\n",
+			newTodoId:   1,
+		}, {
+			indexesFile: "todoId,title,status\n-------------------\n1,todo 1,OPEN\n",
+			newTodoId:   2,
+		},
+	}
+
+	for _, testCase := range testCases {
+		todoId := newTodoId([]byte(testCase.indexesFile))
+		assert.Equal(t, testCase.newTodoId, todoId)
+	}
 
 }
