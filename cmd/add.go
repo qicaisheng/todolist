@@ -24,15 +24,15 @@ var addCmd = &cobra.Command{
 }
 
 func addTodo(title string) {
-	util := utils.TodoListIndexes{Workdir: Workdir()}
-	todoId := util.NewTodoId()
+	indexes := utils.TodoListIndexes{Workdir: Workdir()}
+	todoId := indexes.NewTodoId()
 	fileName := strconv.FormatInt(todoId, 10) + "-" + title + ".md"
 	filePath := filepath.Join(viper.GetString("workdir"), fileName)
 	err := os.WriteFile(filePath, nil, 0644)
 	if err != nil {
 		_ = fmt.Errorf("write file error: %v", err)
 	}
-	util.AppendCreatedTodo(utils.TodolistIndex{TodoId: todoId, Title: title, Status: "OPEN"})
+	indexes.AppendCreatedTodo(utils.TodolistIndex{TodoId: todoId, Title: title, Status: "OPEN"})
 }
 
 func init() {
