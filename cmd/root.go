@@ -39,3 +39,7 @@ func initConfig() {
 		fmt.Printf("wordir is %s\n", viper.GetString("workdir"))
 	}
 }
+
+func Workdir() string {
+	return viper.GetString("workdir")
+}
