@@ -11,18 +11,17 @@ func TestParseTodolistIndexes(t *testing.T) {
 	todolistIndexes, err := todolistIndexesParser([]byte(indexesFile))
 
 	assert.Nil(t, err)
-	assert.NotNil(t, todolistIndexes)
-	assert.NotEmpty(t, todolistIndexes.Indexes)
-	assert.Equal(t, 1, len(todolistIndexes.Indexes))
+	assert.NotEmpty(t, todolistIndexes)
+	assert.Equal(t, 1, len(todolistIndexes))
 	assert.Equal(t, TodolistIndex{
 		TodoId: 1,
 		title:  "todo 1",
 		status: "OPEN",
-	}, *todolistIndexes.Indexes[0])
+	}, *todolistIndexes[0])
 }
 
 func TestTodoListIndexes(t *testing.T) {
-	todolistIndexes := TodolistIndexes{Indexes: []*TodolistIndex{
+	todolistIndexes := []*TodolistIndex{
 		{
 			TodoId: 1,
 			title:  "todo 1",
@@ -32,17 +31,17 @@ func TestTodoListIndexes(t *testing.T) {
 			title:  "todo 2",
 			status: "OPEN",
 		},
-	}}
+	}
 
-	latestTodoId := todolistIndexes.LatestTodoId()
+	todoId := latestTodoId(todolistIndexes)
 
-	assert.Equal(t, int64(2), latestTodoId)
+	assert.Equal(t, int64(2), todoId)
 
-	todolistIndexes = TodolistIndexes{Indexes: []*TodolistIndex{}}
+	todolistIndexes = []*TodolistIndex{}
 
-	latestTodoId = todolistIndexes.LatestTodoId()
+	todoId = latestTodoId(todolistIndexes)
 
-	assert.Equal(t, int64(0), latestTodoId)
+	assert.Equal(t, int64(0), todoId)
 }
 
 func TestNewTodoId(t *testing.T) {

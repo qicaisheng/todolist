@@ -20,23 +20,18 @@ type TodolistIndex struct {
 	status string
 }
 
-type TodolistIndexes struct {
-	Indexes []*TodolistIndex
-}
-
 type TodoListIndexesUtil struct {
 	Workdir string
 }
 
-func (i TodolistIndexes) LatestTodoId() int64 {
-	indexes := i.Indexes
+func latestTodoId(indexes []*TodolistIndex) int64 {
 	if len(indexes) == 0 {
 		return 0
 	}
 	return indexes[len(indexes)-1].TodoId
 }
 
-func todolistIndexesParser(bytes []byte) (TodolistIndexes, error) {
+func todolistIndexesParser(bytes []byte) ([]*TodolistIndex, error) {
 	todolistIndexesText := strings.TrimSpace(string(bytes))
 	lines := strings.Split(todolistIndexesText, "\n")
 	var todolistIndexes []*TodolistIndex
@@ -58,7 +53,7 @@ func todolistIndexesParser(bytes []byte) (TodolistIndexes, error) {
 		})
 		log.Printf("%v", *todolistIndexes[i])
 	}
-	return TodolistIndexes{todolistIndexes}, nil
+	return todolistIndexes, nil
 }
 
 func (util TodoListIndexesUtil) NewTodoId() int64 {
@@ -76,7 +71,7 @@ func newTodoId(indexesFile []byte) int64 {
 	if err != nil {
 		os.Exit(1)
 	}
-	return indexes.LatestTodoId() + 1
+	return latestTodoId(indexes) + 1
 }
 
 func (util TodoListIndexesUtil) InitTodolistIndexesFile() error {
