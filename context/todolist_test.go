@@ -39,8 +39,9 @@ func TestAll(t *testing.T) {
 		Status: "OPEN",
 	}, *todolistIndexes[1])
 
+	todoList.CloseTodo(1)
 	todo1 := todoList.GetTodo(1)
-	assert.Equal(t, "# 1-addTodo 1\n## status\nOPEN\n", todo1)
+	assert.Equal(t, "# 1-addTodo 1\n## status\nCLOSED\n", todo1)
 
 	teardownTestWorkdir(t)
 }
