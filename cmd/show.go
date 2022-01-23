@@ -28,7 +28,8 @@ var showCmd = &cobra.Command{
 func getTodo(todoId int) string {
 	indexes := utils.TodoListIndexes{Workdir: Workdir()}
 	indexOf := indexes.IndexOf(todoId)
-	fileName := strconv.Itoa(indexOf.TodoId) + "-" + indexOf.Title + ".md"
+	fileName := fmt.Sprintf("%v-%s.md", todoId, indexOf.Title)
+
 	todoItemFile := filepath.Join(Workdir(), fileName)
 	todoDetail, err := os.ReadFile(todoItemFile)
 	if err != nil {
