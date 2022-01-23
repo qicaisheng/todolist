@@ -21,22 +21,25 @@ var modifyCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		index := todolist.IndexOf(todoId)
+
 		prompt := promptui.Prompt{
-			Label:     "Title",
+			Label:     "标题",
 			Validate:  func(input string) error { return nil },
-			Default:   "default todo title",
+			Default:   index.Title,
 			AllowEdit: true,
 		}
 
-		result, err := prompt.Run()
+		updatedTitle, err := prompt.Run()
 
 		if err != nil {
 			fmt.Printf("Prompt failed %v\n", err)
 			return
 		}
 
-		fmt.Printf("You choose %q\n", result)
-		fmt.Printf("modify called, todoId is %v\n", todoId)
+		index.Title = updatedTitle
+		todolist.ModifyTodo(index)
+		fmt.Printf("todo %v 已更新成功，更新为如下：\n%s", index.TodoId, todolist.GetTodo(index.TodoId))
 	},
 }
 
