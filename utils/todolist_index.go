@@ -15,20 +15,20 @@ const (
 )
 
 type TodolistIndex struct {
-	TodoId int64
+	TodoId int
 	Title  string
 	Status string
 }
 
 func (i TodolistIndex) String() string {
-	return strconv.FormatInt(i.TodoId, 10) + "," + i.Title + "," + i.Status + "\n"
+	return strconv.Itoa(i.TodoId) + "," + i.Title + "," + i.Status + "\n"
 }
 
 type TodoListIndexes struct {
 	Workdir string
 }
 
-func latestTodoId(indexes []*TodolistIndex) int64 {
+func latestTodoId(indexes []*TodolistIndex) int {
 	if len(indexes) == 0 {
 		return 0
 	}
@@ -45,7 +45,7 @@ func todolistIndexesParser(bytes []byte) ([]*TodolistIndex, error) {
 			log.Printf(".todolist_index file is broken, the content \"%s\" is ignored", line)
 			continue
 		}
-		parseInt, err := strconv.ParseInt(split[0], 0, 0)
+		parseInt, err := strconv.Atoi(split[0])
 		if err != nil {
 			log.Printf(".todolist_index file is broken, the content \"%s\" is ignored", line)
 			continue
@@ -60,7 +60,7 @@ func todolistIndexesParser(bytes []byte) ([]*TodolistIndex, error) {
 	return todolistIndexes, nil
 }
 
-func (indexes TodoListIndexes) NewTodoId() int64 {
+func (indexes TodoListIndexes) NewTodoId() int {
 	indexesFile := indexes.indexesFile()
 	file, err := os.ReadFile(indexesFile)
 	if err != nil {
@@ -70,7 +70,7 @@ func (indexes TodoListIndexes) NewTodoId() int64 {
 	return newTodoId(file)
 }
 
-func newTodoId(indexesFile []byte) int64 {
+func newTodoId(indexesFile []byte) int {
 	indexes, err := todolistIndexesParser(indexesFile)
 	if err != nil {
 		os.Exit(1)
@@ -78,8 +78,8 @@ func newTodoId(indexesFile []byte) int64 {
 	return latestTodoId(indexes) + 1
 }
 
-func indexMap(indexes []*TodolistIndex) map[int64]*TodolistIndex {
-	todolistIndexMap := map[int64]*TodolistIndex{}
+func indexMap(indexes []*TodolistIndex) map[int]*TodolistIndex {
+	todolistIndexMap := map[int]*TodolistIndex{}
 	for _, index := range indexes {
 		todolistIndexMap[index.TodoId] = index
 	}
@@ -113,7 +113,7 @@ func (indexes TodoListIndexes) AppendCreatedTodo(index TodolistIndex) {
 	}
 }
 
-func (indexes TodoListIndexes) IndexOf(todoId int64) *TodolistIndex {
+func (indexes TodoListIndexes) IndexOf(todoId int) *TodolistIndex {
 	list := indexes.List()
 	return indexMap(list)[todoId]
 }

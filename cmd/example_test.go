@@ -32,12 +32,12 @@ func TestAll(t *testing.T) {
 	assert.NotEmpty(t, todolistIndexes)
 	assert.Equal(t, 2, len(todolistIndexes))
 	assert.Equal(t, utils.TodolistIndex{
-		TodoId: int64(1),
+		TodoId: 1,
 		Title:  "addTodo 1",
 		Status: "OPEN",
 	}, *todolistIndexes[0])
 	assert.Equal(t, utils.TodolistIndex{
-		TodoId: int64(2),
+		TodoId: 2,
 		Title:  "addTodo 2",
 		Status: "OPEN",
 	}, *todolistIndexes[1])
