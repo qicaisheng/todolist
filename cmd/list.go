@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"todolist/utils"
+	"todolist/context"
 
 	"github.com/spf13/cobra"
 )
@@ -28,7 +28,7 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 }
 
-func listTodolist() []*utils.TodolistIndex {
-	indexes := utils.TodoListIndexes{Workdir: Workdir()}
+func listTodolist() []*context.TodolistIndex {
+	indexes := context.TodoListIndexes{Workdir: Workdir()}
 	return indexes.List()
 }

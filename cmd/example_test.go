@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
-	"todolist/utils"
+	"todolist/context"
 )
 
 const (
@@ -32,12 +32,12 @@ func TestAll(t *testing.T) {
 	todolistIndexes = listTodolist()
 	assert.NotEmpty(t, todolistIndexes)
 	assert.Equal(t, 2, len(todolistIndexes))
-	assert.Equal(t, utils.TodolistIndex{
+	assert.Equal(t, context.TodolistIndex{
 		TodoId: 1,
 		Title:  "addTodo 1",
 		Status: "OPEN",
 	}, *todolistIndexes[0])
-	assert.Equal(t, utils.TodolistIndex{
+	assert.Equal(t, context.TodolistIndex{
 		TodoId: 2,
 		Title:  "addTodo 2",
 		Status: "OPEN",

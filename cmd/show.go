@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"todolist/utils"
+	"todolist/context"
 
 	"github.com/spf13/cobra"
 )
@@ -26,7 +26,7 @@ var showCmd = &cobra.Command{
 }
 
 func getTodo(todoId int) string {
-	indexes := utils.TodoListIndexes{Workdir: Workdir()}
+	indexes := context.TodoListIndexes{Workdir: Workdir()}
 	indexOf := indexes.IndexOf(todoId)
 	fileName := fmt.Sprintf("%v-%s.md", todoId, indexOf.Title)
 

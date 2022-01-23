@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"todolist/utils"
+	"todolist/context"
 )
 
 var addCmd = &cobra.Command{
@@ -24,7 +24,7 @@ var addCmd = &cobra.Command{
 }
 
 func addTodo(title string) int {
-	indexes := utils.TodoListIndexes{Workdir: Workdir()}
+	indexes := context.TodoListIndexes{Workdir: Workdir()}
 	todoId := indexes.NewTodoId()
 	fileName := fmt.Sprintf("%v-%s.md", strconv.Itoa(todoId), title)
 	filePath := filepath.Join(viper.GetString("workdir"), fileName)
@@ -33,7 +33,7 @@ func addTodo(title string) int {
 	if err != nil {
 		_ = fmt.Errorf("write file error: %v", err)
 	}
-	indexes.AppendCreatedTodo(utils.TodolistIndex{TodoId: todoId, Title: title, Status: "OPEN"})
+	indexes.AppendCreatedTodo(context.TodolistIndex{TodoId: todoId, Title: title, Status: "OPEN"})
 	return todoId
 }
 

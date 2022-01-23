@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"todolist/utils"
+	"todolist/context"
 )
 
 var initCmd = &cobra.Command{
@@ -19,7 +19,7 @@ var initCmd = &cobra.Command{
 }
 
 func initTodolist() error {
-	indexes := utils.TodoListIndexes{Workdir: Workdir()}
+	indexes := context.TodoListIndexes{Workdir: Workdir()}
 	err := indexes.InitTodolistIndexesFile()
 	if err != nil {
 		return fmt.Errorf("init toolist error: %v", err)
