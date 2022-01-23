@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -22,11 +23,11 @@ func TestAll(t *testing.T) {
 	todolistIndexes := listTodolist()
 	assert.Empty(t, todolistIndexes)
 
-	addTodo("addTodo 1")
-	addTodo("addTodo 2")
+	todoId1 := addTodo("addTodo 1")
+	todoId2 := addTodo("addTodo 2")
 
-	assertTodoCreated(t, "1-addTodo 1.md")
-	assertTodoCreated(t, "2-addTodo 2.md")
+	assertTodoCreated(t, todoId1, "addTodo 1")
+	assertTodoCreated(t, todoId2, "addTodo 2")
 
 	todolistIndexes = listTodolist()
 	assert.NotEmpty(t, todolistIndexes)
@@ -53,13 +54,14 @@ func teardownTestWorkdir(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func assertTodoCreated(t *testing.T, name string) {
+func assertTodoCreated(t *testing.T, todoId int, name string) {
 	files, err := ioutil.ReadDir(testWorkdir)
 	assert.Nil(t, err)
 
+	fileName := fmt.Sprintf("%v-%s.md", todoId, name)
 	existsAddTodo1File := false
 	for _, f := range files {
-		if f.Name() == name {
+		if f.Name() == fileName {
 			existsAddTodo1File = true
 			break
 		}

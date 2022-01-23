@@ -18,12 +18,12 @@ var addCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		title := args[0]
-		addTodo(title)
-		fmt.Printf("add called, titile is %v\n", args[0])
+		todoId := addTodo(title)
+		fmt.Printf("\"%s\"创建成功，todoId: %v\n", title, todoId)
 	},
 }
 
-func addTodo(title string) {
+func addTodo(title string) int {
 	indexes := utils.TodoListIndexes{Workdir: Workdir()}
 	todoId := indexes.NewTodoId()
 	fileName := strconv.Itoa(todoId) + "-" + title + ".md"
@@ -34,6 +34,7 @@ func addTodo(title string) {
 		_ = fmt.Errorf("write file error: %v", err)
 	}
 	indexes.AppendCreatedTodo(utils.TodolistIndex{TodoId: todoId, Title: title, Status: "OPEN"})
+	return todoId
 }
 
 func init() {
