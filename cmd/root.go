@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
 	"os"
 	"todolist/context"
 
@@ -25,18 +24,11 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
-}
-
-func initConfig() {
-	viper.SetConfigName(".todolist")
-	viper.SetConfigType("yml")
-	viper.AddConfigPath(".")
-
-	viper.AutomaticEnv()
-
-	if err := viper.ReadInConfig(); err != nil {
-		fmt.Printf(".todolist is broken, read error: %v", err)
+	dirname, err := os.UserHomeDir()
+	if err != nil {
+		fmt.Printf("get user home dir error: %v\n", err)
+		os.Exit(1)
 	}
-	todolist = context.Todolist{Workdir: viper.GetString("workdir")}
+	todolist = context.Todolist{Workdir: dirname}
+	todolist.InitTodolist()
 }

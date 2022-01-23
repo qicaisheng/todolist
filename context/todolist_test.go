@@ -1,7 +1,6 @@
 package context
 
 import (
-	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -60,7 +59,6 @@ func teardownTestWorkdir(t *testing.T) {
 }
 
 func setUpTestWorkdir(t *testing.T) {
-	viper.Set("workdir", testWorkdir)
 	if _, err := os.Stat(testWorkdir); os.IsNotExist(err) {
 		err := os.Mkdir(testWorkdir, os.ModePerm)
 		assert.Nil(t, err)
