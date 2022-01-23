@@ -17,7 +17,7 @@ var listCmd = &cobra.Command{
 			fmt.Printf("todo列表还是空的，快去添加todo吧\n")
 		}
 		for _, todo := range todolist {
-			fmt.Printf("%+v", todo)
+			fmt.Printf("%+v\n", todo)
 		}
 	},
 }
