@@ -3,12 +3,12 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"todolist/context"
+	"todolist/internal"
 
 	"github.com/spf13/cobra"
 )
 
-var todolist context.Todolist
+var todolist internal.Todolist
 var rootCmd = &cobra.Command{
 	Use:   "todolist",
 	Short: "高效快捷进行todolist管理",
@@ -29,6 +29,6 @@ func init() {
 		fmt.Printf("get user home dir error: %v\n", err)
 		os.Exit(1)
 	}
-	todolist = context.Todolist{Workdir: dirname}
+	todolist = internal.Todolist{Workdir: dirname}
 	todolist.InitTodolist()
 }
