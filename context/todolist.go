@@ -53,3 +53,10 @@ func (t Todolist) GetTodo(todoId int) string {
 	}
 	return string(todoDetail)
 }
+
+func (t Todolist) CloseTodo(todoId int) {
+	indexes := TodoListIndexes{t.Workdir}
+	indexOf := indexes.IndexOf(todoId)
+	indexOf.close()
+	indexes.update(indexOf)
+}

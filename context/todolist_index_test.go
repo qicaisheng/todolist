@@ -64,5 +64,17 @@ func TestNewTodoId(t *testing.T) {
 		todoId := newTodoId([]byte(testCase.indexesFile))
 		assert.Equal(t, testCase.newTodoId, todoId)
 	}
+}
 
+func TestUpdateIndex(t *testing.T) {
+	oldIndexesBody := "todoId,title,status\n-------------------\n1,todo 1,OPEN\n2,todo 2,OPEN\n3,todo 3,OPEN\n"
+	index := &TodolistIndex{
+		TodoId: 2,
+		Title:  "to do 2",
+		Status: "CLOSED",
+	}
+
+	updatedIndexesBody := updateIndex(index, oldIndexesBody)
+
+	assert.Equal(t, "todoId,title,status\n-------------------\n1,todo 1,OPEN\n2,to do 2,CLOSED\n3,todo 3,OPEN\n", updatedIndexesBody)
 }
