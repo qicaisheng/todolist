@@ -14,58 +14,8 @@ const (
 	todolistIndexesFileTemplate = "todoId,title,status\n-------------------\n"
 )
 
-type TodolistIndex struct {
-	TodoId int
-	Title  string
-	Status string
-}
-
-func (i TodolistIndex) String() string {
-	return strconv.Itoa(i.TodoId) + "," + i.Title + "," + i.Status
-}
-
-func (i *TodolistIndex) close() {
-	i.Status = "CLOSED"
-}
-
-func (i *TodolistIndex) update(index *TodolistIndex) {
-	i.Title = index.Title
-	i.Status = index.Status
-}
-
 type TodoListIndexes struct {
 	Workdir string
-}
-
-func latestTodoId(indexes []*TodolistIndex) int {
-	if len(indexes) == 0 {
-		return 0
-	}
-	return indexes[len(indexes)-1].TodoId
-}
-
-func todolistIndexesParser(bytes []byte) ([]*TodolistIndex, error) {
-	todolistIndexesText := strings.TrimSpace(string(bytes))
-	lines := strings.Split(todolistIndexesText, "\n")
-	var todolistIndexes []*TodolistIndex
-	for _, line := range lines[2:] {
-		split := strings.Split(line, ",")
-		if len(split) != 3 {
-			fmt.Printf(".todolist_index file is broken, the content \"%s\" is ignored\n", line)
-			continue
-		}
-		parseInt, err := strconv.Atoi(split[0])
-		if err != nil {
-			fmt.Printf(".todolist_index file is broken, the content \"%s\" is ignored\n", line)
-			continue
-		}
-		todolistIndexes = append(todolistIndexes, &TodolistIndex{
-			TodoId: parseInt,
-			Title:  split[1],
-			Status: split[2],
-		})
-	}
-	return todolistIndexes, nil
 }
 
 func (indexes TodoListIndexes) NewTodoId() int {
@@ -159,6 +109,37 @@ func (indexes TodoListIndexes) update(index *TodolistIndex) {
 		fmt.Printf("write file error: %v\n", err)
 		os.Exit(1)
 	}
+}
+
+func latestTodoId(indexes []*TodolistIndex) int {
+	if len(indexes) == 0 {
+		return 0
+	}
+	return indexes[len(indexes)-1].TodoId
+}
+
+func todolistIndexesParser(bytes []byte) ([]*TodolistIndex, error) {
+	todolistIndexesText := strings.TrimSpace(string(bytes))
+	lines := strings.Split(todolistIndexesText, "\n")
+	var todolistIndexes []*TodolistIndex
+	for _, line := range lines[2:] {
+		split := strings.Split(line, ",")
+		if len(split) != 3 {
+			fmt.Printf(".todolist_index file is broken, the content \"%s\" is ignored\n", line)
+			continue
+		}
+		parseInt, err := strconv.Atoi(split[0])
+		if err != nil {
+			fmt.Printf(".todolist_index file is broken, the content \"%s\" is ignored\n", line)
+			continue
+		}
+		todolistIndexes = append(todolistIndexes, &TodolistIndex{
+			TodoId: parseInt,
+			Title:  split[1],
+			Status: split[2],
+		})
+	}
+	return todolistIndexes, nil
 }
 
 func updateIndex(index *TodolistIndex, oldIndexesBody string) string {
