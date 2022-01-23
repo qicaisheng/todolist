@@ -28,6 +28,11 @@ func (i *TodolistIndex) close() {
 	i.Status = "CLOSED"
 }
 
+func (i *TodolistIndex) update(index *TodolistIndex) {
+	i.Title = index.Title
+	i.Status = index.Status
+}
+
 type TodoListIndexes struct {
 	Workdir string
 }

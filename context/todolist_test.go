@@ -43,6 +43,14 @@ func TestAll(t *testing.T) {
 	todo1 := todoList.GetTodo(1)
 	assert.Equal(t, "# 1-addTodo 1\n## status\nCLOSED\n", todo1)
 
+	todoList.ModifyTodo(&TodolistIndex{
+		TodoId: 2,
+		Title:  "updated todo 2",
+		Status: "OPEN",
+	})
+	todo2 := todoList.GetTodo(2)
+	assert.Equal(t, "# 2-updated todo 2\n## status\nOPEN\n", todo2)
+
 	teardownTestWorkdir(t)
 }
 

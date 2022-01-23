@@ -43,3 +43,10 @@ func (t Todolist) CloseTodo(todoId int) {
 	indexOf.close()
 	indexes.update(indexOf)
 }
+
+func (t Todolist) ModifyTodo(index *TodolistIndex) {
+	indexes := TodoListIndexes{t.Workdir}
+	indexOf := indexes.IndexOf(index.TodoId)
+	indexOf.update(index)
+	indexes.update(indexOf)
+}
