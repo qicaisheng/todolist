@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"os"
+	"todolist/context"
 
 	"github.com/spf13/cobra"
 )
 
+var todolist context.Todolist
 var rootCmd = &cobra.Command{
 	Use:   "todolist",
 	Short: "高效快捷进行todolist管理",
@@ -36,8 +38,5 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Printf(".todolist is broken, read error: %v", err)
 	}
-}
-
-func Workdir() string {
-	return viper.GetString("workdir")
+	todolist = context.Todolist{Workdir: viper.GetString("workdir")}
 }

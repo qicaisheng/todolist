@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"todolist/context"
 )
 
 var initCmd = &cobra.Command{
@@ -12,19 +11,10 @@ var initCmd = &cobra.Command{
 	Long:    `初始化todolist文件夹，使用方式：todolist init`,
 	Example: `todolist init`,
 	Args:    cobra.NoArgs,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("init called")
-		return initTodolist()
+		todolist.InitTodolist()
 	},
-}
-
-func initTodolist() error {
-	indexes := context.TodoListIndexes{Workdir: Workdir()}
-	err := indexes.InitTodolistIndexesFile()
-	if err != nil {
-		return fmt.Errorf("init toolist error: %v", err)
-	}
-	return nil
 }
 
 func init() {

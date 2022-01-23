@@ -2,8 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"todolist/context"
-
 	"github.com/spf13/cobra"
 )
 
@@ -14,7 +12,7 @@ var listCmd = &cobra.Command{
 	Long:  `快速查看todolist，使用方式：todolist list`,
 	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		todolist := listTodolist()
+		todolist := todolist.ListIndexes()
 		if todolist == nil {
 			fmt.Printf("todo列表还是空的，快去添加todo吧\n")
 		}
@@ -26,9 +24,4 @@ var listCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(listCmd)
-}
-
-func listTodolist() []*context.TodolistIndex {
-	indexes := context.TodoListIndexes{Workdir: Workdir()}
-	return indexes.List()
 }

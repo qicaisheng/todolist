@@ -2,12 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
-	"strconv"
-	"todolist/context"
-
 	"github.com/spf13/cobra"
+	"os"
+	"strconv"
 )
 
 var showCmd = &cobra.Command{
@@ -21,22 +18,8 @@ var showCmd = &cobra.Command{
 			fmt.Println("todoId is not valid number")
 			os.Exit(1)
 		}
-		fmt.Println(getTodo(todoId))
+		fmt.Println(todolist.GetTodo(todoId))
 	},
-}
-
-func getTodo(todoId int) string {
-	indexes := context.TodoListIndexes{Workdir: Workdir()}
-	indexOf := indexes.IndexOf(todoId)
-	fileName := fmt.Sprintf("%v-%s.md", todoId, indexOf.Title)
-
-	todoItemFile := filepath.Join(Workdir(), fileName)
-	todoDetail, err := os.ReadFile(todoItemFile)
-	if err != nil {
-		fmt.Printf("get todo detail error: %v\n", err)
-		os.Exit(1)
-	}
-	return string(todoDetail)
 }
 
 func init() {
