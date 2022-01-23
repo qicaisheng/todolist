@@ -31,10 +31,14 @@ func (t Todolist) ListIndexes() []*TodolistIndex {
 }
 
 func (t Todolist) GetTodo(todoId int) string {
+	indexOf := t.IndexOf(todoId)
+	return fmt.Sprintf("# %v-%s\n## status\n%s\n", indexOf.TodoId, indexOf.Title, indexOf.Status)
+}
+
+func (t Todolist) IndexOf(todoId int) *TodolistIndex {
 	indexes := TodoListIndexes{t.Workdir}
 	indexOf := indexes.IndexOf(todoId)
-
-	return fmt.Sprintf("# %v-%s\n## status\n%s\n", indexOf.TodoId, indexOf.Title, indexOf.Status)
+	return indexOf
 }
 
 func (t Todolist) CloseTodo(todoId int) {
