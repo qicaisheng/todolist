@@ -28,7 +28,8 @@ func addTodo(title string) {
 	todoId := indexes.NewTodoId()
 	fileName := strconv.FormatInt(todoId, 10) + "-" + title + ".md"
 	filePath := filepath.Join(viper.GetString("workdir"), fileName)
-	err := os.WriteFile(filePath, nil, 0644)
+	todoItem := "# " + strconv.FormatInt(todoId, 10) + "-" + title + "\n## status\nOPEN\n"
+	err := os.WriteFile(filePath, []byte(todoItem), 0644)
 	if err != nil {
 		_ = fmt.Errorf("write file error: %v", err)
 	}

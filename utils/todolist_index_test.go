@@ -32,15 +32,17 @@ func TestTodoListIndexes(t *testing.T) {
 			Status: "OPEN",
 		},
 	}
-
 	todoId := latestTodoId(todolistIndexes)
-
 	assert.Equal(t, int64(2), todoId)
+	todolistIndexesMap := indexMap(todolistIndexes)
+	assert.Equal(t, TodolistIndex{
+		TodoId: 1,
+		Title:  "todo 1",
+		Status: "OPEN",
+	}, *todolistIndexesMap[1])
 
 	todolistIndexes = []*TodolistIndex{}
-
 	todoId = latestTodoId(todolistIndexes)
-
 	assert.Equal(t, int64(0), todoId)
 }
 

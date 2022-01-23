@@ -78,6 +78,14 @@ func newTodoId(indexesFile []byte) int64 {
 	return latestTodoId(indexes) + 1
 }
 
+func indexMap(indexes []*TodolistIndex) map[int64]*TodolistIndex {
+	todolistIndexMap := map[int64]*TodolistIndex{}
+	for _, index := range indexes {
+		todolistIndexMap[index.TodoId] = index
+	}
+	return todolistIndexMap
+}
+
 func (indexes TodoListIndexes) InitTodolistIndexesFile() error {
 	indexesFile := indexes.indexesFile()
 	if _, err := os.Stat(indexesFile); os.IsNotExist(err) {
@@ -103,6 +111,11 @@ func (indexes TodoListIndexes) AppendCreatedTodo(index TodolistIndex) {
 	if _, err := f.WriteString(index.String()); err != nil {
 		log.Println(err)
 	}
+}
+
+func (indexes TodoListIndexes) IndexOf(todoId int64) *TodolistIndex {
+	list := indexes.List()
+	return indexMap(list)[todoId]
 }
 
 func (indexes TodoListIndexes) List() []*TodolistIndex {
