@@ -39,15 +39,15 @@ func todolistIndexesParser(bytes []byte) ([]*TodolistIndex, error) {
 	todolistIndexesText := strings.TrimSpace(string(bytes))
 	lines := strings.Split(todolistIndexesText, "\n")
 	var todolistIndexes []*TodolistIndex
-	for i, line := range lines[2:] {
+	for _, line := range lines[2:] {
 		split := strings.Split(line, ",")
 		if len(split) != 3 {
-			log.Printf(".todolist_index file is broken, the content \"%s\" is ignored", line)
+			fmt.Printf(".todolist_index file is broken, the content \"%s\" is ignored", line)
 			continue
 		}
 		parseInt, err := strconv.Atoi(split[0])
 		if err != nil {
-			log.Printf(".todolist_index file is broken, the content \"%s\" is ignored", line)
+			fmt.Printf(".todolist_index file is broken, the content \"%s\" is ignored", line)
 			continue
 		}
 		todolistIndexes = append(todolistIndexes, &TodolistIndex{
@@ -55,7 +55,6 @@ func todolistIndexesParser(bytes []byte) ([]*TodolistIndex, error) {
 			Title:  split[1],
 			Status: split[2],
 		})
-		log.Printf("%v", *todolistIndexes[i])
 	}
 	return todolistIndexes, nil
 }
