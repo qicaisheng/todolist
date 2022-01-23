@@ -39,7 +39,7 @@ var modifyCmd = &cobra.Command{
 
 		index.Title = updatedTitle
 		todolist.ModifyTodo(index)
-		fmt.Printf("todo %v 已更新成功，更新为如下：\n%s", index.TodoId, todolist.GetTodo(index.TodoId))
+		fmt.Printf("todo %v 已更新成功，更新为如下：\n%s", index.TodoId, index.Show())
 	},
 }
 

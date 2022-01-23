@@ -32,7 +32,7 @@ func (t Todolist) ListIndexes() []*TodolistIndex {
 
 func (t Todolist) GetTodo(todoId int) string {
 	indexOf := t.IndexOf(todoId)
-	return fmt.Sprintf("# %v-%s\n## status\n%s\n", indexOf.TodoId, indexOf.Title, indexOf.Status)
+	return indexOf.Show()
 }
 
 func (t Todolist) IndexOf(todoId int) *TodolistIndex {
